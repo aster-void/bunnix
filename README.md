@@ -21,7 +21,7 @@ It's this easy.
 # run latest bun
 nix run github:aster-void/bunnix
 # run specific version of bun
-nix run github:aster-void/bunnix#bunVersions.1_2_10
+nix run github:aster-void/bunnix#v1_2_10
 ```
 
 In an inpure context of nix, do this:
@@ -34,8 +34,8 @@ in
 # if it's a shell.nix,
 pkgs.mkShell {
   packages = [
-    bunnix.packages.${system}.default # latest bun
-    bunnix.packages.${system}.bunVersions."1_2_10" # specific version
+    bunnix.packages.${system}.default # latest
+    bunnix.packages.${system}.v1_2_10 # specific version
   ];
 }
 ```
@@ -60,8 +60,8 @@ If it's a flake, do this:
   in {
     devShells.${system}.default = pkgs.mkShell {
       packages = [
-        bunnix.packages.${system}.default
-        bunnix.packages.${system}.bunVersions."1_2_10" # specific version
+        bunnix.packages.${system}.default # latest
+        bunnix.packages.${system}.v1_2_10 # specific version
       ];
     };
   };
@@ -69,7 +69,7 @@ If it's a flake, do this:
 ```
 ### Supported versions
 
-all 1.2.x versions are supported at the time of writing this.
+all 1.x.x versions are supported at the time of writing this.
 see ./supported_versions for all supported versions.
 
 ## Contribution

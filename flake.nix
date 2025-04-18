@@ -21,10 +21,10 @@
         );
         # "1.2.10": { derivation }
         bunFromVersion = pkgs.callPackage ./lib/bun-from-version.nix {};
-        # { 1_2_9 = { derivation }; 1_2_10 = { derivation }; }
+        # { v1_2_9 = { derivation }; v1_2_10 = { derivation }; }
         bunByVersion = lib.listToAttrs (
           map (version: {
-            name = lib.replaceStrings ["."] ["_"] version;
+            name = "v" + (lib.replaceStrings ["."] ["_"] version);
             value = bunFromVersion version;
           })
           supportedVersions
@@ -36,19 +36,18 @@
           # [ "1.2.9" "1.2.10"]
           bunVersions = supportedVersions;
         };
-        # default = { derivation };
-        packages.default = self.packages.${system}.bunVersions.latest;
-        # bunVersions = { 1_2_10 = { derivation }; latest = { derivation }; };
-        packages.bunVersions =
+        # { default = { derivation }; latest = { derivation }; v1_2_10 = { derivation }; };
+        packages =
           bunByVersion
           // {
+            default = bunFromVersion (lib.last supportedVersions);
             latest = bunFromVersion (lib.last supportedVersions);
           };
 
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
           packages = [
-            self.packages.${system}.default
+            self.packages.${system}.latest
             pkgs.alejandra
 
             pkgs.jq
