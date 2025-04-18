@@ -50,6 +50,7 @@
             pkgs.bun
             pkgs.alejandra
 
+            pkgs.jq
             pkgs.curl
             pkgs.bash
             pkgs.coreutils

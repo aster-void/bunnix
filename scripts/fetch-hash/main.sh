@@ -21,7 +21,7 @@ if [[ "$1" =~ \d+\.\d+\.\d+ ]]; then
 fi
 version=$1
 if ! "${NO_REGISTRY:-false}"; then
-  if grep "^$version$" ../../supported_versions; then
+  if grep --silent "^$version$" ../../supported_versions; then
     error 'Version already supported. If you want to still run this, run again with NO_REGISTRY=true'
   fi
   echo "$version" >> ../../supported_versions
