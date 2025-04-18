@@ -8,10 +8,13 @@ set -euo pipefail
 # - NO_REGISTRY?: "true" | "false" - skips writing to supported_versions, as well as stopping version duplication check (default: false)
 #
 
-error() {
+printerr() {
     Red='\033[0;31m'   # Red
     Color_Off='\033[0m' # Text Reset
     echo -e "${Red}error${Color_Off}:" "$@" >&2
+}
+error() {
+    printerr "$@"
     exit 1
 }
 
@@ -52,15 +55,20 @@ mkdir -p ../../tmp/fetch-hash
       "x86_64-linux")
         URI_PLAT="linux-x64";;
     esac
+
     BUN_URI="https://github.com/oven-sh/bun/releases/download/bun-v${version}/bun-$URI_PLAT.zip"
     curl --fail --location --progress-bar --output "$NIX_PLAT.tmp.zip" "$BUN_URI" ||
-        error "Failed to download bun from \"$BUN_URI\""
+        printerr "Failed to download bun from \"$BUN_URI\""
     {
       echo -n "$NIX_PLAT = \"";
-      nix hash file "$NIX_PLAT.tmp.zip" | tr --delete '\n';
+      if [ -f "$NIX_PLAT.tmp.zip" ]; then
+        nix hash file "$NIX_PLAT.tmp.zip" | tr --delete '\n';
+      else
+        echo "Sorry, couldn't fetch this resource"
+      fi
       echo '";'
     } >> "$OUT_PATH"
-    rm "$NIX_PLAT.tmp.zip"
+    rm "$NIX_PLAT.tmp.zip" || true
   done
   
   echo '  };
