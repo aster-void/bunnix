@@ -18,9 +18,11 @@ jobs:
       - uses: cachix/install-nix-action@v31
         with:
           nix_path: nixpkgs=channel:nixos-unstable
-      - run: nix-shell -p alejandra bun --run 'bun cron'
-        env:
-          AUTO_COMMIT: "true"
-          AUTO_CHECKOUT: "true"
+      - run: |
+          echo -n "NEW_VERSION=" >> "$GITHUB_ENV"
+          nix-shell -p alejandra bun --run 'bun cron' >> "$GITHUB_ENV"
       - name: Create PR
         uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bump/bun-v${{ env.NEW_VERSION }}
+          commit-message: "bump: Bun -> v${{ env.NEW_VERSION }}"
