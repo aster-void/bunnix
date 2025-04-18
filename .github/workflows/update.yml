@@ -4,6 +4,7 @@ on:
     #        m  h  d m w
     - cron: "0 */3 * * *"
     # -> run every 3 hours
+  push:
 permissions:
   contents: write
   pull-requests: write
