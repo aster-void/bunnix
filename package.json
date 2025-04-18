@@ -1,0 +1,18 @@
+{
+	"name": "bunnix",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"devDependencies": {
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	},
+	"scripts": {
+		"get": "./scripts/fetch-hash/main.sh"
+	},
+	"dependencies": {
+		"valibot": "^1.0.0"
+	}
+}

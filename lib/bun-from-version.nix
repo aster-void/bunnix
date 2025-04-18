@@ -1,5 +1,5 @@
 {callPackage}: version: let
-  builders = import ./lib/builders;
+  builders = import ./builders;
   info = import ./version-info/v${version}.nix;
 in
   callPackage builders.${info.builder-version} {} {
