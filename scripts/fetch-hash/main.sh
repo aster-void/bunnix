@@ -24,7 +24,7 @@ if [[ "$1" =~ \d+\.\d+\.\d+ ]]; then
 fi
 version=$1
 if ! "${NO_REGISTRY:=false}"; then
-  if grep --silent "^$version$" ../../supported_versions; then
+  if grep --silent "^$version$" ../../lib/supported_versions; then
     error 'Version already installed. If you want to still run this, run again with NO_REGISTRY=true'
   fi
 fi
@@ -78,8 +78,8 @@ rmdir ../../tmp/fetch-hash ../../tmp
 
 # writing to reg
 if ! $NO_REGISTRY; then
-  echo "$version" >> ../../supported_versions
-  sort --version-sort ../../supported_versions -o ../../supported_versions
+  echo "$version" >> ../../lib/supported_versions
+  sort --version-sort ../../lib/supported_versions -o ../../lib/supported_versions
 fi
 
 # verify

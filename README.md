@@ -70,7 +70,7 @@ If it's a flake, do this:
 ### Supported versions
 
 all 1.x.x versions are supported at the time of writing this.
-see ./supported_versions for all supported versions.
+see `./lib/supported_versions` for all supported versions.
 
 ## Contribution
 

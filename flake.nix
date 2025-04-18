@@ -17,7 +17,7 @@
         pkgs = nixpkgs.legacyPackages.${system};
         # [ "1.2.9" "1.2.10"]
         supportedVersions = builtins.filter (line: line != "") (
-          lib.splitString "\n" (builtins.readFile ./supported_versions)
+          lib.splitString "\n" (builtins.readFile ./lib/supported_versions)
         );
         # "1.2.10": { derivation }
         bunFromVersion = pkgs.callPackage ./lib/bun-from-version.nix {};
