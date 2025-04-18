@@ -9,7 +9,8 @@
 	},
 	"private": true,
 	"scripts": {
-		"get": "./scripts/fetch-hash/main.sh"
+		"get": "./scripts/fetch-hash/main.sh",
+		"cron": "./scripts/cron-update/main.sh"
 	},
 	"type": "module"
 }
