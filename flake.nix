@@ -48,7 +48,7 @@
         formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
           packages = [
-            pkgs.bun
+            self.packages.${system}.default
             pkgs.alejandra
 
             pkgs.jq

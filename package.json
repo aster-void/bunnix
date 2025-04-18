@@ -4,10 +4,10 @@
 	"type": "module",
 	"private": true,
 	"devDependencies": {
-		"@types/bun": "latest"
+		"@types/bun": "^1.2.10"
 	},
 	"peerDependencies": {
-		"typescript": "^5"
+		"typescript": "^5.8.3"
 	},
 	"scripts": {
 		"get": "./scripts/fetch-hash/main.sh"
