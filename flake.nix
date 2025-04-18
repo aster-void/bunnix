@@ -16,17 +16,19 @@
         inherit (pkgs) lib;
         pkgs = nixpkgs.legacyPackages.${system};
         # [ "1.2.9" "1.2.10"]
-        supportedVersions = builtins.filter (line: line != "") (lib.splitString "\n" (builtins.readFile ./supported_versions));
+        supportedVersions = builtins.filter (line: line != "") (
+          lib.splitString "\n" (builtins.readFile ./supported_versions)
+        );
         # "1.2.10": { derivation }
         bunFromVersion = pkgs.callPackage ./lib/bun-from-version.nix {};
         # { 1_2_9 = { derivation }; 1_2_10 = { derivation }; }
-        bunByVersion = lib.listToAttrs (map (
-            version: {
-              name = lib.replaceStrings ["."] ["_"] version;
-              value = bunFromVersion version;
-            }
-          )
-          supportedVersions);
+        bunByVersion = lib.listToAttrs (
+          map (version: {
+            name = lib.replaceStrings ["."] ["_"] version;
+            value = bunFromVersion version;
+          })
+          supportedVersions
+        );
       in {
         lib = {
           # "1.2.10": { derivation }
@@ -35,8 +37,7 @@
           bunVersions = supportedVersions;
         };
         # default = { derivation };
-        packages.default =
-          self.packages.${system}.bunVersions.latest;
+        packages.default = self.packages.${system}.bunVersions.latest;
         # bunVersions = { 1_2_10 = { derivation }; latest = { derivation }; };
         packages.bunVersions =
           bunByVersion
