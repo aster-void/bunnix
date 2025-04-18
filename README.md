@@ -1,14 +1,15 @@
 # Bunnix
 
+## What's this?
+
+A Toolkit to manage bun in nix.
+
 ## Features + Roadmap
 
 Features:
-- Run latest bun
 - Run every bun version since 1.2.0
-- Automated update script
 
 Roadmap:
-- Automate update with github actions
 - Run every bun version since 1.0.0
 - Bun package build helper
 
