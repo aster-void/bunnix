@@ -25,4 +25,10 @@ jobs:
         uses: peter-evans/create-pull-request@v7
         with:
           branch: bump/bun-v${{ env.NEW_VERSION }}
-          commit-message: "bump: Bun -> v${{ env.NEW_VERSION }}"
+          commit-message: "bump: bun to v${{ env.NEW_VERSION }}"
+          title: "Bump: bun to v${{ env.NEW_VERSION }}"
+          body: |
+            Add support for bun version ${{ env.NEW_VERSION }}.
+
+            Made through update.yml and `bun cron`
+          labels: bot,bump
