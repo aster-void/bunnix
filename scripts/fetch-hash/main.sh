@@ -25,7 +25,7 @@ fi
 version=$1
 if ! "${NO_REGISTRY:-false}"; then
   if grep --silent "^$version$" ../../supported_versions; then
-    error 'Version already supported. If you want to still run this, run again with NO_REGISTRY=true'
+    error 'Version already installed. If you want to still run this, run again with NO_REGISTRY=true'
   fi
   echo "$version" >> ../../supported_versions
   sort --version-sort ../../supported_versions -o ../../supported_versions
@@ -42,8 +42,7 @@ mkdir -p ../../tmp/fetch-hash
     "x86_64-linux"
   )
   OUT_PATH="../../lib/version-info/v${version}.nix"
-  echo '{
-    hashes = {' > "$OUT_PATH"
+  echo '{hashes = {' > "$OUT_PATH"
   for NIX_PLAT in "${nix_platforms[@]}"; do
     case $NIX_PLAT in
       "aarch64-darwin")
