@@ -23,12 +23,10 @@ if [[ "$1" =~ \d+\.\d+\.\d+ ]]; then
   error 'Please provide version in this format: 1.2.10'
 fi
 version=$1
-if ! "${NO_REGISTRY:-false}"; then
+if ! "${NO_REGISTRY:=false}"; then
   if grep --silent "^$version$" ../../supported_versions; then
     error 'Version already installed. If you want to still run this, run again with NO_REGISTRY=true'
   fi
-  echo "$version" >> ../../supported_versions
-  sort --version-sort ../../supported_versions -o ../../supported_versions
 fi
 
 mkdir -p ../../tmp/fetch-hash
@@ -74,9 +72,15 @@ mkdir -p ../../tmp/fetch-hash
     builder-version = "v1";
   }' >> "$OUT_PATH"
   
-  alejandra "$OUT_PATH"
+  alejandra "$OUT_PATH" 1>&2
 )
 rmdir ../../tmp/fetch-hash ../../tmp
+
+# writing to reg
+if ! $NO_REGISTRY; then
+  echo "$version" >> ../../supported_versions
+  sort --version-sort ../../supported_versions -o ../../supported_versions
+fi
 
 # verify
 (
@@ -85,6 +89,6 @@ rmdir ../../tmp/fetch-hash ../../tmp
   
     git add -N "./lib/version-info/v${version}.nix"
     
-    nix run ".#bunVersions.${version//./_}" test
+    nix run ".#bunVersions.${version//./_}" test 1>&2
   fi
 )
