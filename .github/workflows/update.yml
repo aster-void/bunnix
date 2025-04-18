@@ -1,5 +1,6 @@
-name: "Check for updates"
+name: Update
 on:
+  workflow_dispatch:
   schedule:
     #        m  h  d m w
     - cron: "0 */3 * * *"
@@ -9,6 +10,7 @@ permissions:
   pull-requests: write
 jobs:
   update:
+    name: update
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
