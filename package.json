@@ -12,5 +12,6 @@
 		"get": "./scripts/fetch-hash/main.sh",
 		"cron": "./scripts/cron-update/main.sh"
 	},
-	"type": "module"
+	"type": "module",
+	"packageManager": "bun@1.2.7"
 }
