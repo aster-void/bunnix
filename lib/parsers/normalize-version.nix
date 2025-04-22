@@ -12,9 +12,9 @@
 {
   lib,
   supportedVersions,
+  startsWith,
 }: version: let
-  startsWith = substr: full: lib.strings.commonPrefixLength full substr == builtins.stringLength substr;
-  normalized = lib.replaceStrings ["_" "bun@" "v" " " "\n" "\r"] ["." "" "" "" "" ""] version;
+  normalized = lib.replaceStrings ["_" "bun" "@" "v" " " "\n" "\r"] ["." "" "" "" "" "" ""] version;
   len = builtins.length (lib.splitVersion normalized);
 in
   if len > 3

@@ -28,7 +28,6 @@
         checks = {
           unitTest = pkgs.callPackage ./tests.nix {bunnixLib = bunnixLib;};
         };
-        formatter = pkgs.alejandra;
         devShells.default = pkgs.mkShell {
           packages = [
             # self.packages.${system}.latest

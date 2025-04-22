@@ -6,12 +6,8 @@
   supportedVersions = builtins.filter (line: line != "") (
     lib.splitString "\n" (builtins.readFile ./supported_versions)
   );
-  normalizeVersion = callPackage ./parsers/normalize-version.nix {inherit supportedVersions;};
-  # (cat ./.bun-version) -> "1.2.10"
-  parseBunVersionFile = callPackage ./parsers/parse-bun-version-file.nix {inherit normalizeVersion;};
-  # (cat ./package.json) -> "1.2.10"
-  # reads from "packageManager" field.
-  parsePackageJson = callPackage ./parsers/parse-package-json.nix {inherit normalizeVersion;};
+  startsWith = substr: full: lib.strings.commonPrefixLength full substr == builtins.stringLength substr;
+  normalizeVersion = callPackage ./parsers/normalize-version.nix {inherit supportedVersions startsWith;};
 
   # "1.2.10": { derivation }
   bunFromVersion = callPackage ./bun-from-version.nix {};
@@ -23,8 +19,20 @@
     })
     supportedVersions
   );
+
+  # (cat ./.bun-version) -> "1.2.10"
+  parseBunVersionFile = callPackage ./parsers/parse-bun-version-file.nix {inherit normalizeVersion;};
+  # (cat ./package.json) -> "1.2.10"
+  # reads from "packageManager" field.
+  parsePackageJson = callPackage ./parsers/parse-package-json.nix {inherit normalizeVersion;};
+  # (cat .tool-versions) -> "1.2.10"
+  parseAsdfToolVersions = callPackage ./parsers/parse-asdf-tool-version.nix {inherit startsWith normalizeVersion;};
 in {
-  inherit supportedVersions normalizeVersion bunFromVersion bunByVersion parseBunVersionFile parsePackageJson;
-  fromBunVersionFile = file: bunFromVersion (parseBunVersionFile (builtins.readFile file));
-  fromPackageJson = file: bunFromVersion (parsePackageJson (builtins.readFile file));
+  inherit supportedVersions normalizeVersion bunFromVersion bunByVersion parseBunVersionFile parsePackageJson parseAsdfToolVersions;
+  # ./.bun-version -> { <derivation> }
+  fromBunVersionFile = path: bunFromVersion (parseBunVersionFile (builtins.readFile path));
+  # ./package.json -> { <derivation> }
+  fromPackageJson = path: bunFromVersion (parsePackageJson (builtins.readFile path));
+  # ./.tool-versions -> { <derivation> }
+  fromToolVersions = path: bunFromVersion (parseAsdfToolVersions (builtins.readFile path));
 }
