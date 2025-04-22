@@ -79,10 +79,12 @@ then, you can use bunnix however you like:
     bunnix.packages.${system}.default
     # specify version of bun in the nix file
     bunnix.packages.${system}.v1_2_10
-    # from `.bun-version`
+    # from .bun-version
     (bunnix.lib.${system}.fromBunVersionFile ./.bun-version)
-    # from `package.json`'s `"packageManager" field
+    # from package.json's `"packageManager" field
     (bunnix.lib.${system}.fromPackageJson ./package.json)
+    # from asdf's `.tool-versions`
+    (bunnix.lib.${system}.fromToolVersions ./.tool-versions)
     # parse some other version lock file manually, then get bun of that version
     (bunnix.lib.${system}.bunFromVersion "v1.2.10")
   ];
