@@ -15,6 +15,8 @@ Roadmap:
 
 ## How to use
 
+### In shell
+
 It's this easy.
 
 ```sh
@@ -24,7 +26,9 @@ nix run github:aster-void/bunnix
 nix run github:aster-void/bunnix#v1_2_10
 ```
 
-In an inpure context of nix, do this:
+### In a nix file
+
+In an inpure context of nix, use `builtins.getFlake`:
 
 ```nix
 let
@@ -35,12 +39,11 @@ in
 pkgs.mkShell {
   packages = [
     bunnix.packages.${system}.default # latest
-    bunnix.packages.${system}.v1_2_10 # specific version
   ];
 }
 ```
 
-If it's a flake, do this:
+If it's a flake, add bunnix to `inputs`:
 
 ```nix
 {
@@ -61,12 +64,32 @@ If it's a flake, do this:
     devShells.${system}.default = pkgs.mkShell {
       packages = [
         bunnix.packages.${system}.default # latest
-        bunnix.packages.${system}.v1_2_10 # specific version
       ];
     };
   };
 }
 ```
+
+then, you can use bunnix however you like:
+
+```nix
+{
+  packages = [
+    # use latest version of bun
+    bunnix.packages.${system}.default
+    # specify version of bun in the nix file
+    bunnix.packages.${system}.v1_2_10
+    # from `.bun-version`
+    (bunnix.lib.${system}.fromBunVersionFile ./.bun-version)
+    # from `package.json`'s `"packageManager" field
+    (bunnix.lib.${system}.fromPackageJson ./package.json)
+    # parse some other version lock file manually, then get bun of that version
+    (bunnix.lib.${system}.bunFromVersion "v1.2.10")
+  ];
+}
+```
+
+
 ### Supported versions
 
 all 1.x.x versions are supported at the time of writing this.
@@ -74,18 +97,23 @@ see `./lib/supported_versions` for all supported versions.
 
 ## Contribution
 
+Any kind of Contribution (bug report, feature request, feature implementation, README enhancement, etc) is welcome.
+
+### Coding style
+
+formatter = alejandra, biome
+
+### Required packages
+
+- Nix
+- Direnv (optional)
+
+## Maintainance
+
+GitHub Workflow checks for new version every 3 hours, so you (hopefully) don't need to manually do it.
+
 ### Get new version of bun
 
 ```sh
 bun get 1.2.10
 ```
-
-### Coding style
-
-formatter = alejandra
-
-### Required packages
-
-- Nix
-- Git
-- Direnv (optional)

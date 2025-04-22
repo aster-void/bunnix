@@ -34,6 +34,7 @@
             # self.packages.${system}.latest
             pkgs.bun
             pkgs.alejandra
+            pkgs.biome
 
             pkgs.jq
             pkgs.curl
