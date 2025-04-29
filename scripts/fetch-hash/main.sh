@@ -89,6 +89,6 @@ fi
   
     git add -N "./lib/version-info/v${version}.nix"
     
-    nix run ".#bunVersions.${version//./_}" test 1>&2
+    nix run ".#v${version//./_}" test 1>&2
   fi
 )
