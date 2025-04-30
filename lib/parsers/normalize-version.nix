@@ -14,7 +14,7 @@
   supportedVersions,
   startsWith,
 }: version: let
-  normalized = lib.replaceStrings ["_" "bun" "@" "v" " " "\n" "\r"] ["." "" "" "" "" "" ""] version;
+  normalized = lib.replaceStrings ["_" "bun" "@" "v" " " "\t" "\n" "\r"] ["." "" "" "" "" "" "" ""] version;
   len = builtins.length (lib.splitVersion normalized);
 in
   if normalized == "latest"
