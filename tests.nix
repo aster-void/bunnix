@@ -23,11 +23,11 @@
       expected = "1.2.7";
     };
     testBunVersionParsing = {
-      expr = bunnixLib.parseBunVersionFile (builtins.readFile ./samples/.bun-version);
+      expr = bunnixLib.parseBunVersion (builtins.readFile ./samples/.bun-version);
       expected = "1.2.6";
     };
     testAsdfToolVersionsParsing = {
-      expr = bunnixLib.parseAsdfToolVersions (builtins.readFile ./samples/.tool-versions);
+      expr = bunnixLib.parseToolVersions (builtins.readFile ./samples/.tool-versions);
       expected = "1.2.5";
     };
   };

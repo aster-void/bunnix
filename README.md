@@ -82,11 +82,11 @@ then, you can use bunnix however you like:
     # from .bun-version
     (bunnix.lib.${system}.fromBunVersionFile ./.bun-version)
     # from package.json's `"packageManager" field
-    (bunnix.lib.${system}.fromPackageJson ./package.json)
+    (bunnix.lib.${system}.fromPackageJsonFile ./package.json)
     # from asdf's `.tool-versions`
-    (bunnix.lib.${system}.fromToolVersions ./.tool-versions)
+    (bunnix.lib.${system}.fromToolVersionsFile ./.tool-versions)
     # parse some other version lock file manually, then get bun of that version
-    (bunnix.lib.${system}.bunFromVersion "v1.2.10")
+    (bunnix.lib.${system}.fromVersion "v1.2.10")
   ];
 }
 ```

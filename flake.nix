@@ -19,10 +19,10 @@
         lib = bunnixLib;
         # { default = { derivation }; latest = { derivation }; v1_2_10 = { derivation }; };
         packages =
-          bunnixLib.bunByVersion
+          bunnixLib.byVersion
           // {
-            default = bunnixLib.bunFromVersion (pkgs.lib.last bunnixLib.supportedVersions);
-            latest = bunnixLib.bunFromVersion (pkgs.lib.last bunnixLib.supportedVersions);
+            default = bunnixLib.fromVersion (pkgs.lib.last bunnixLib.supportedVersions);
+            latest = bunnixLib.fromVersion (pkgs.lib.last bunnixLib.supportedVersions);
           };
 
         checks = {
