@@ -17,7 +17,9 @@
   normalized = lib.replaceStrings ["_" "bun" "@" "v" " " "\n" "\r"] ["." "" "" "" "" "" ""] version;
   len = builtins.length (lib.splitVersion normalized);
 in
-  if len > 3
+  if normalized == "latest"
+  then lib.last supportedVersions
+  else if len > 3
   then throw "Invalid version format: got \"" ++ version ++ "\""
   else if len == 3
   then normalized
