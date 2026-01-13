@@ -7,7 +7,6 @@ on:
     # -> run every 3 hours
 permissions:
   contents: write
-  pull-requests: write
 jobs:
   update:
     name: update
@@ -22,14 +21,14 @@ jobs:
       - run: |
           echo -n "NEW_VERSION=" >> "$GITHUB_ENV"
           nix-shell -p alejandra bun --run 'bun cron' >> "$GITHUB_ENV"
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v7
-        with:
-          branch: bump/bun-v${{ env.NEW_VERSION }}
-          commit-message: "bump: bun to v${{ env.NEW_VERSION }}"
-          title: "Bump: bun to v${{ env.NEW_VERSION }}"
-          body: |
-            Add support for bun version ${{ env.NEW_VERSION }}.
-
-            Made through update.yml and `bun cron`
-          labels: bot,bump
+      - name: Run tests
+        if: env.NEW_VERSION != ''
+        run: nix run .#latest test
+      - name: Commit and push
+        if: env.NEW_VERSION != ''
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "bump: bun to v${{ env.NEW_VERSION }}"
+          git push
